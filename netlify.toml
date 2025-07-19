@@ -1,0 +1,15 @@
+[build]
+  command = "pip install -r requirements.txt && python build_static.py"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[dev]
+  command = "python build_static.py && netlify dev"
+  port = 8888
+  publish = "dist"
+  autoLaunch = true
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200

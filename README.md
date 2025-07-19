@@ -17,7 +17,7 @@ A Python application for detecting and counting coins in images using image proc
 
 1. Clone this repository:
    ```
-   git clone https://github.com/YOUR_USERNAME/coin-counter.git
+   git clone https://github.com/Yazzyhb/coin-counter.git
    cd coin-counter
    ```
 
