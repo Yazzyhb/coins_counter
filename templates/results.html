@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coin Counter Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 2rem;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        .card-header {
+            background-color: #6c757d;
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+        .result-image {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 10px auto;
+            display: block;
+        }
+        .result-count {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #007bff;
+            text-align: center;
+        }
+        .result-label {
+            text-align: center;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h2>Coin Detection Results</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-6 text-center">
+                                <h4>Original Image</h4>
+                                <img src="data:image/png;base64,{{ original_image }}" class="result-image" alt="Original Image">
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <h4>Detected Coins</h4>
+                                <img src="data:image/png;base64,{{ labeled_image }}" class="result-image" alt="Detected Coins">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="result-label">Total Coins Detected</h5>
+                                        <div class="result-count">{{ num_coins }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="result-label">Different Coin Sizes</h5>
+                                        <div class="result-count">{{ size_differences }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-center mb-3">
+                            <a href="{{ url_for('index') }}" class="btn btn-primary">Process Another Image</a>
+                        </div>
+                        <div class="alert alert-warning small mb-0">
+                            <strong>Disclaimer:</strong> The detection algorithm may not be 100% accurate. Results can be affected by image quality, lighting conditions, coin arrangement, and background objects. For best results, use images with well-separated coins on a contrasting background.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

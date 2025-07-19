@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coin Counter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 2rem;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #6c757d;
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            display: none;
+            margin: 10px auto;
+            border-radius: 10px;
+        }
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .file-input-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header text-center">
+                        <h2>Coin Counter</h2>
+                        <p class="mb-0">Upload an image to detect and count coins</p>
+                    </div>
+                    <div class="card-body">
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-danger">{{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                        
+                        <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" class="text-center">
+                            <div class="mb-4">
+                                <div class="file-input-wrapper">
+                                    <button class="btn btn-primary">Select Image</button>
+                                    <input type="file" name="file" id="file" accept="image/*" onchange="previewImage(this)">
+                                </div>
+                                <div class="mt-2">
+                                    <small class="text-muted">Supported formats: PNG, JPG, JPEG, GIF</small>
+                                </div>
+                            </div>
+                            
+                            <img id="preview" class="preview-image" src="#" alt="Image Preview">
+                            
+                            <div class="mb-3">
+                                <label for="scale" class="form-label">Scale Factor:</label>
+                                <select class="form-select" id="scale" name="scale">
+                                    <option value="1">1x (Original Size)</option>
+                                    <option value="2" selected>2x (Recommended)</option>
+                                    <option value="3">3x (Larger)</option>
+                                    <option value="4">4x (Largest)</option>
+                                </select>
+                                <div class="form-text">Higher scale may improve accuracy but requires more processing time</div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Process Image</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4>About Coin Counter</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>This application detects and counts coins in images using custom image processing algorithms implemented from scratch.</p>
+                        <p><strong>Features:</strong></p>
+                        <ul>
+                            <li>Custom Gaussian blur implementation</li>
+                            <li>Otsu's thresholding for segmentation</li>
+                            <li>Morphological operations (erosion, dilation)</li>
+                            <li>Connected component analysis</li>
+                            <li>Size-based coin classification</li>
+                        </ul>
+                        <div class="alert alert-info mt-3">
+                            <strong>Note:</strong> Results may not be perfect in all scenarios. The application works best with images where coins are clearly separated and have good contrast with the background. Overlapping coins or similar-sized objects may cause inaccuracies.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function previewImage(input) {
+            const preview = document.getElementById('preview');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    submitBtn.disabled = false;
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.style.display = 'none';
+                submitBtn.disabled = true;
+            }
+        }
+    </script>
+</body>
+</html>
